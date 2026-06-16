@@ -70,6 +70,15 @@ export const CountryList = ({
       });
   }, [countries, searchQuery, selectedRegion, selectedYear, sortField, sortOrder]);
 
+  const rowProps = useMemo(
+    () => ({
+      items: filteredCountries,
+      selectedYear,
+      selectedColumns,
+    }),
+    [filteredCountries, selectedYear, selectedColumns]
+  );
+
   const rowHeight = useDynamicRowHeight({ defaultRowHeight: 300 });
 
   if (filteredCountries.length === 0) {
@@ -82,11 +91,7 @@ export const CountryList = ({
         rowHeight={rowHeight}
         rowCount={filteredCountries.length}
         rowComponent={Row}
-        rowProps={{
-          items: filteredCountries,
-          selectedYear,
-          selectedColumns,
-        }}
+        rowProps={rowProps}
         style={{ height: '600px', width: '100%' }}
       />
     </div>
