@@ -42,14 +42,14 @@
 
 ### Interaction C: Change year
 
-- **Commit duration**: 2,3 s
-- **Render duration**: 37 ms
+- **Commit duration**: 2,4 s
+- **Render duration**: 10 ms
 - **Screenshot**: ![screenshot](./docs/screenshots/optimized/Change%20Year.png)
 
 ### Interaction D: Toggle column
 
 - **Commit duration**: 1,2 s
-- **Render duration**: 3 ms
+- **Render duration**: 2 ms
 - **Screenshot**: ![screenshot](./docs/screenshots/optimized/Toggle%20Columns.png)
 
 ## Summary of Improvements
@@ -58,6 +58,6 @@
 | ---------------- | ------------- | -------------- | ----------- |
 | Sort countries   | 96            | 5              | 94,79%      |
 | Search countries | 13            | 0,1            | 99,23%      |
-| Change year      | 98            | 37             | 62,24%      |
-| Toggle column    | 102           | 3              | 97,06%      |
-| **Average**      | **77,25**     | **11,28**      | **88,33%**  |
+| Change year      | 98            | 10             | 89,80%      |
+| Toggle column    | 102           | 3              | 98,04%      |
+| **Average**      | **77,25**     | **4,53**       | **95,46%**  |
