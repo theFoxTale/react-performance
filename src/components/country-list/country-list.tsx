@@ -48,9 +48,9 @@ export const CountryList = ({
 
   return (
     <div className={styles.countryList}>
-      {filteredCountries.map((country, index) => (
+      {filteredCountries.map((country) => (
         <CountryCard
-          key={index}
+          key={country.id}
           country={country}
           selectedYear={selectedYear}
           selectedColumns={selectedColumns}
