@@ -1,0 +1,10 @@
+# Добавляем локальные бинарники в PATH
+export PATH="$PWD/node_modules/.bin:$PATH"
+
+echo "Running full TypeScript check..."
+npm run type-check
+echo "✅ Type check passed."
+
+echo "Running ESLint for all files..."
+npm run lint
+echo "✅ ESLint passed."

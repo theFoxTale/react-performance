@@ -1,4 +1,3 @@
-
 # Performance Optimization Report
 
 ## Baseline Measurements
@@ -56,10 +55,9 @@
 ## Summary of Improvements
 
 | Interaction      | Baseline (ms) | Optimized (ms) | Improvement |
-| ---------------- |---------------| -------------- | ----------- |
+| ---------------- | ------------- | -------------- | ----------- |
 | Sort countries   | 96            | \_\_\_         | \_\_\_%     |
 | Search countries | 13            | \_\_\_         | \_\_\_%     |
 | Change year      | 98            | \_\_\_         | \_\_\_%     |
 | Toggle column    | 102           | \_\_\_         | \_\_\_%     |
 | **Average**      | **77,25**     | **\_\_\_**     | **\_\_\_%** |
-
