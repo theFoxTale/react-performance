@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+
 import { useCo2Data } from '../../hooks/useCo2Data';
 import { LoadingSpinner } from '../loading-spinner/loading-spinner';
 import { SearchBar } from '../search-bar/search-bar';
@@ -32,40 +34,39 @@ export const App = () => {
     isColumnModalOpen: false,
   });
 
-  const years = data ? getAvailableYears(data) : [];
-  const availableColumns = getAvailableColumns();
+  const [debouncedSearchQuery] = useDebounce(state.searchQuery, 300);
 
-  const handleSearch = (value: string) => {
-    setState({ ...state, searchQuery: value });
-  };
+  const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
+  const availableColumns = useMemo(() => getAvailableColumns(), []);
 
-  const handleYearChange = (year: number) => {
-    setState({ ...state, selectedYear: year });
-  };
+  const handleSearch = useCallback((value: string) => {
+    setState((prev) => ({ ...prev, searchQuery: value }));
+  }, []);
 
-  const handleSortFieldChange = (field: 'name' | 'population') => {
-    setState({ ...state, sortField: field });
-  };
+  const handleYearChange = useCallback((year: number) => {
+    setState((prev) => ({ ...prev, selectedYear: year }));
+  }, []);
 
-  const handleSortOrderToggle = () => {
-    setState({
-      ...state,
-      sortOrder: state.sortOrder === 'asc' ? 'desc' : 'asc',
-    });
-  };
+  const handleSortFieldChange = useCallback((field: 'name' | 'population') => {
+    setState((prev) => ({ ...prev, sortField: field }));
+  }, []);
 
-  const handleColumnToggle = (column: string) => {
-    setState({
-      ...state,
-      selectedColumns: state.selectedColumns.includes(column)
-        ? state.selectedColumns.filter((c) => c !== column)
-        : [...state.selectedColumns, column],
-    });
-  };
+  const handleSortOrderToggle = useCallback(() => {
+    setState((prev) => ({ ...prev, sortOrder: prev.sortOrder === 'asc' ? 'desc' : 'asc' }));
+  }, []);
 
-  const handleModalToggle = () => {
-    setState({ ...state, isColumnModalOpen: !state.isColumnModalOpen });
-  };
+  const handleColumnToggle = useCallback((column: string) => {
+    setState((prev) => ({
+      ...prev,
+      selectedColumns: prev.selectedColumns.includes(column)
+        ? prev.selectedColumns.filter((c) => c !== column)
+        : [...prev.selectedColumns, column],
+    }));
+  }, []);
+
+  const handleModalToggle = useCallback(() => {
+    setState((prev) => ({ ...prev, isColumnModalOpen: !prev.isColumnModalOpen }));
+  }, []);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -114,7 +115,7 @@ export const App = () => {
       {/* Country List */}
       <CountryList
         countries={data}
-        searchQuery={state.searchQuery}
+        searchQuery={debouncedSearchQuery}
         selectedColumns={state.selectedColumns}
         selectedRegion={state.selectedRegion}
         selectedYear={state.selectedYear}
