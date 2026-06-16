@@ -53,7 +53,19 @@ export const CountryList = memo(
     sortField,
     sortOrder,
   }: CountryListProps) => {
+    const countryPopulations = useMemo(() => {
+      return countries.map((country) => ({
+        id: country.id,
+        population: getPopulationForYear(createYearDataMap(country.data), selectedYear) || 0,
+      }));
+    }, [countries, selectedYear]);
+
     const filteredCountries = useMemo(() => {
+      const popMap: Record<string, number> = {};
+      countryPopulations.forEach(({ id, population }) => {
+        popMap[id] = population;
+      });
+
       return countries
         .filter((c) => {
           const matchesSearch = c.id.toLowerCase().includes(searchQuery.toLowerCase());
@@ -64,12 +76,12 @@ export const CountryList = memo(
           if (sortField === 'name') {
             return sortOrder === 'asc' ? a.id.localeCompare(b.id) : b.id.localeCompare(a.id);
           } else {
-            const popA = getPopulationForYear(createYearDataMap(a.data), selectedYear) || 0;
-            const popB = getPopulationForYear(createYearDataMap(b.data), selectedYear) || 0;
+            const popA = popMap[a.id] || 0;
+            const popB = popMap[b.id] || 0;
             return sortOrder === 'asc' ? popA - popB : popB - popA;
           }
         });
-    }, [countries, searchQuery, selectedRegion, selectedYear, sortField, sortOrder]);
+    }, [countries, searchQuery, selectedRegion, sortField, sortOrder, countryPopulations]);
 
     const rowProps = useMemo(
       () => ({
