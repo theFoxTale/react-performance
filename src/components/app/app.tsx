@@ -1,4 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+
 import { useCo2Data } from '../../hooks/useCo2Data';
 import { LoadingSpinner } from '../loading-spinner/loading-spinner';
 import { SearchBar } from '../search-bar/search-bar';
@@ -31,6 +33,8 @@ export const App = () => {
     selectedColumns: ['year', 'population', 'co2', 'co2_per_capita'],
     isColumnModalOpen: false,
   });
+
+  const [debouncedSearchQuery] = useDebounce(state.searchQuery, 300);
 
   const years = useMemo(() => (data ? getAvailableYears(data) : []), [data]);
   const availableColumns = useMemo(() => getAvailableColumns(), []);
@@ -111,7 +115,7 @@ export const App = () => {
       {/* Country List */}
       <CountryList
         countries={data}
-        searchQuery={state.searchQuery}
+        searchQuery={debouncedSearchQuery}
         selectedColumns={state.selectedColumns}
         selectedRegion={state.selectedRegion}
         selectedYear={state.selectedYear}
